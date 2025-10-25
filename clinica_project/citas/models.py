@@ -33,7 +33,7 @@ class Medico(models.Model):
     correo = models.EmailField(max_length=100, null=True, blank=True)
     especialidad = models.ForeignKey(Especialidad, on_delete=models.SET_NULL, null=True, blank=True)
     centro_medico = models.ForeignKey(CentroMedico, on_delete=models.SET_NULL, null=True, blank=True)
-
+    numero_licencia = models.CharField(max_length=50, unique=True) 
     def __str__(self):
         return f"Dr. {self.nombre} {self.apellido}"
 

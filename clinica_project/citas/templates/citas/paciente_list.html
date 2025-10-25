@@ -1,0 +1,36 @@
+
+{% extends 'citas/base.html' %}
+
+{% block title %}Lista de Pacientes{% endblock %}
+
+{% block content %}
+<h2>Pacientes</h2>
+<a href="{% url 'paciente_create' %}" class="btn btn-primary mb-3">+ Nuevo Paciente</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in pacientes %}
+        <tr>
+            <td>{{ p.nombre }} {{ p.apellido }}</td>
+            <td>{{ p.email }}</td>
+            <td>{{ p.telefono }}</td>
+            <td>
+                <a href="{% url 'paciente_detail' p.pk %}" class="btn btn-sm btn-info">Ver</a>
+                <a href="{% url 'paciente_update' p.pk %}" class="btn btn-sm btn-warning">Editar</a>
+                <a href="{% url 'paciente_delete' p.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4" class="text-center">No hay pacientes registrados.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
