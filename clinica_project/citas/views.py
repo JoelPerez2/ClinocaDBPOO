@@ -4,10 +4,20 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Paciente, Medico, Cita
 from .forms import PacienteForm, MedicoForm, CitaForm
 
+
+# === VISTA DE INICIO ===
+def home(request):
+    return redirect('paciente_list')
+
+
 # === PACIENTE ===
 def paciente_list(request):
     pacientes = Paciente.objects.all()
     return render(request, 'citas/paciente_list.html', {'pacientes': pacientes})
+
+def paciente_detail(request, pk):
+    paciente = get_object_or_404(Paciente, pk=pk)
+    return render(request, 'citas/paciente_detail.html', {'paciente': paciente})
 
 def paciente_create(request):
     if request.method == 'POST':
@@ -37,10 +47,15 @@ def paciente_delete(request, pk):
         return redirect('paciente_list')
     return render(request, 'citas/confirm_delete.html', {'obj': paciente, 'type': 'Paciente'})
 
-# === MEDICO ===
+
+# === MÉDICO ===
 def medico_list(request):
     medicos = Medico.objects.all()
     return render(request, 'citas/medico_list.html', {'medicos': medicos})
+
+def medico_detail(request, pk):
+    medico = get_object_or_404(Medico, pk=pk)
+    return render(request, 'citas/medico_detail.html', {'medico': medico})
 
 def medico_create(request):
     if request.method == 'POST':
@@ -70,10 +85,15 @@ def medico_delete(request, pk):
         return redirect('medico_list')
     return render(request, 'citas/confirm_delete.html', {'obj': medico, 'type': 'Médico'})
 
+
 # === CITA ===
 def cita_list(request):
     citas = Cita.objects.select_related('paciente', 'medico').all()
     return render(request, 'citas/cita_list.html', {'citas': citas})
+
+def cita_detail(request, pk):
+    cita = get_object_or_404(Cita, pk=pk)
+    return render(request, 'citas/cita_detail.html', {'cita': cita})
 
 def cita_create(request):
     if request.method == 'POST':
@@ -102,32 +122,3 @@ def cita_delete(request, pk):
         cita.delete()
         return redirect('cita_list')
     return render(request, 'citas/confirm_delete.html', {'obj': cita, 'type': 'Cita'})
-
-from django.shortcuts import render, get_object_or_404
-from .models import Paciente, Medico, Cita
-
-def paciente_detail(request, pk):
-    paciente = get_object_or_404(Paciente, pk=pk)
-    return render(request, 'citas/paciente_detail.html', {'paciente': paciente})
-
-def medico_detail(request, pk):
-    medico = get_object_or_404(Medico, pk=pk)
-    return render(request, 'citas/medico_detail.html', {'medico': medico})
-
-def cita_detail(request, pk):
-    cita = get_object_or_404(Cita, pk=pk)
-    return render(request, 'citas/cita_detail.html', {'cita': cita})
-
-# citas/views.py
-from django.shortcuts import redirect
-
-def home(request):
-    return redirect('paciente_list')
-
-# citas/views.py
-from django.shortcuts import render
-
-def paciente_list(request):
-    return render(request, 'citas/paciente_list.html', {
-        'title': 'Lista de Pacientes'
-    })

@@ -1,0 +1,16 @@
+<!-- citas/templates/citas/paciente_form.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crear Paciente</title>
+</head>
+<body>
+    <h2>Crear Nuevo Paciente</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- ← Esto muestra los campos del formulario -->
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a href="{% url 'paciente_list' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</body>
+</html>
