@@ -5,6 +5,7 @@
 
 {% block content %}
 <h2>Citas</h2>
+<a href="{% url 'home' %}" class="btn btn-secondary mb-3">← Volver al Inicio</a>
 <a href="{% url 'cita_create' %}" class="btn btn-primary mb-3">+ Nueva Cita</a>
 
 <table class="table table-striped table-hover">
@@ -22,7 +23,7 @@
         <tr>
             <td>{{ c.paciente.nombre }} {{ c.paciente.apellido }}</td>
             <td>Dr. {{ c.medico.nombre }} {{ c.medico.apellido }}</td>
-            <td>{{ c.fecha|date:"d/m/Y H:i" }}</td>
+            <td>{{ c.fecha|date:"d/m/Y" }} {{ c.hora|time:"H:i" }}</td>
             <td>{{ c.motivo|truncatechars:30 }}</td>
             <td>
                 <a href="{% url 'cita_update' c.pk %}" class="btn btn-sm btn-warning">Editar</a>

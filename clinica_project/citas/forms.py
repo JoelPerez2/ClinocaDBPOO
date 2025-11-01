@@ -21,17 +21,29 @@ class MedicoForm(forms.ModelForm):
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
             'apellido': forms.TextInput(attrs={'class': 'form-control'}),
-            'especialidad': forms.TextInput(attrs={'class': 'form-control'}),
+            'especialidad': forms.Select(attrs={'class': 'form-select'}),
             'numero_licencia': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 class CitaForm(forms.ModelForm):
     class Meta:
         model = Cita
-        fields = ['paciente', 'medico', 'fecha', 'motivo']
+        fields = ['paciente', 'medico', 'fecha', 'hora', 'motivo']  # ← Añadido 'hora'
         widgets = {
             'paciente': forms.Select(attrs={'class': 'form-select'}),
             'medico': forms.Select(attrs={'class': 'form-select'}),
-            'fecha': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
+            'fecha': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'hora': forms.TimeInput(attrs={'type': 'time', 'class': 'form-control'}),  # Nuevo widget
             'motivo': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['fecha'].input_formats = [
+            '%Y-%m-%d',
+            '%d/%m/%Y',
+        ]
+        self.fields['hora'].input_formats = [
+            '%H:%M',
+            '%I:%M %p',
+        ]

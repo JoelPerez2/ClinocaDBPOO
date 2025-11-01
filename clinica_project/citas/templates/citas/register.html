@@ -1,0 +1,15 @@
+<!-- templates/citas/register.html -->
+{% extends 'citas/base.html' %}
+
+{% block title %}Registrarse{% endblock %}
+
+{% block content %}
+<h2>Crear Cuenta</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Registrarse</button>
+</form>
+<p>¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión</a></p>
+<a href="{% url 'home' %}" class="btn btn-secondary mt-2">← Volver al Inicio</a>
+{% endblock %}

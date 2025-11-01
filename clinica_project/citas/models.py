@@ -16,7 +16,7 @@ class CentroMedico(models.Model):
 
 
 class Especialidad(models.Model):
-    nombre_especialidad = models.CharField(max_length=50)
+    nombre_especialidad = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.nombre_especialidad
@@ -56,7 +56,7 @@ class Medico(models.Model):
     correo = models.EmailField(max_length=100, blank=True, default="")  # ← corregido
     especialidad = models.ForeignKey(Especialidad, on_delete=models.SET_NULL, null=True, blank=True)
     centro_medico = models.ForeignKey(CentroMedico, on_delete=models.SET_NULL, null=True, blank=True)
-    numero_licencia = models.CharField(max_length=50, unique=True, default="SIN-LICENCIA")
+    numero_licencia = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
         return f"Dr. {self.nombre} {self.apellido}"
