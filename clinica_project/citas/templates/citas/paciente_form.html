@@ -1,16 +1,115 @@
-<!-- citas/templates/citas/paciente_form.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Crear Paciente</title>
-</head>
-<body>
-    <h2>Crear Nuevo Paciente</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}  <!-- ← Esto muestra los campos del formulario -->
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a href="{% url 'paciente_list' %}" class="btn btn-secondary">Cancelar</a>
-    </form>
-</body>
-</html>
+<!-- templates/citas/paciente_form.html -->
+{% extends 'citas/base.html' %}
+
+{% block title %}{% if paciente %}Editar Paciente{% else %}Nuevo Paciente{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Encabezado -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary">
+            {% if paciente %}✏️ Editar Paciente{% else %}➕ Nuevo Paciente{% endif %}
+        </h2>
+        <a href="{% if paciente %}{% url 'paciente_detail' paciente.pk %}{% else %}{% url 'paciente_list' %}{% endif %}" 
+           class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Volver
+        </a>
+    </div>
+
+    <!-- Formulario -->
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="card-body p-4">
+            <form method="post">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="{{ form.nombre.id_for_label }}" class="form-label fw-semibold">Nombre</label>
+                        {{ form.nombre }}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="{{ form.apellido.id_for_label }}" class="form-label fw-semibold">Apellido</label>
+                        {{ form.apellido }}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="{{ form.email.id_for_label }}" class="form-label fw-semibold">Correo</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="{{ form.telefono.id_for_label }}" class="form-label fw-semibold">Teléfono</label>
+                        {{ form.telefono }}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="{{ form.fecha_nacimiento.id_for_label }}" class="form-label fw-semibold">Fecha de Nacimiento</label>
+                        {{ form.fecha_nacimiento }}
+                    </div>
+                </div>
+
+                <!-- Botones -->
+                <div class="mt-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="bi bi-save"></i> {% if paciente %}Guardar{% else %}Crear{% endif %}
+                    </button>
+                    <a href="{% if paciente %}{% url 'paciente_detail' paciente.pk %}{% else %}{% url 'paciente_list' %}{% endif %}" 
+                       class="btn btn-outline-secondary px-4">
+                        <i class="bi bi-x-circle"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos adicionales -->
+<style>
+    /* Estilos de inputs */
+    .form-control {
+        border-radius: 8px !important;
+        padding: 10px !important;
+        font-size: 1rem !important;
+        border: 1px solid #ced4da !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.03) !important;
+        transition: box-shadow 0.2s ease, border-color 0.2s ease !important;
+    }
+
+    .form-control:focus {
+        border-color: #0d6efd !important;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25) !important;
+    }
+
+    .form-label {
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    /* Modo oscuro */
+    body.dark-mode .card {
+        background-color: #1e1e1e !important;
+        color: white !important;
+    }
+
+    body.dark-mode .form-control {
+        background-color: #2d2d2d !important;
+        border-color: #444 !important;
+        color: white !important;
+    }
+
+    body.dark-mode .form-label {
+        color: white !important;
+    }
+
+    body.dark-mode .btn-primary {
+        background: linear-gradient(135deg, #0d6efd, #0b5ed7) !important;
+        border: none !important;
+    }
+
+    body.dark-mode .btn-outline-secondary {
+        color: #ccc !important;
+        border-color: #555 !important;
+    }
+
+    body.dark-mode .btn-outline-secondary:hover {
+        background-color: #333 !important;
+        color: white !important;
+    }
+</style>
+{% endblock %}

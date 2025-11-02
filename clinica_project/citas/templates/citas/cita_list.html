@@ -1,40 +1,119 @@
-
+<!-- templates/citas/cita_list.html -->
 {% extends 'citas/base.html' %}
 
 {% block title %}Lista de Citas{% endblock %}
 
 {% block content %}
-<h2>Citas</h2>
-<a href="{% url 'home' %}" class="btn btn-secondary mb-3">← Volver al Inicio</a>
-<a href="{% url 'cita_create' %}" class="btn btn-primary mb-3">+ Nueva Cita</a>
+<div class="container mt-4">
+    <!-- Encabezado -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary">📅 Citas</h2>
+        <div>
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary me-2">
+                <i class="bi bi-arrow-left"></i> Volver al Inicio
+            </a>
+            <a href="{% url 'cita_create' %}" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> Nueva Cita
+            </a>
+        </div>
+    </div>
 
-<table class="table table-striped table-hover">
-    <thead class="table-dark">
-        <tr>
-            <th>Paciente</th>
-            <th>Médico</th>
-            <th>Fecha y Hora</th>
-            <th>Motivo</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for c in citas %}
-        <tr>
-            <td>{{ c.paciente.nombre }} {{ c.paciente.apellido }}</td>
-            <td>Dr. {{ c.medico.nombre }} {{ c.medico.apellido }}</td>
-            <td>{{ c.fecha|date:"d/m/Y" }} {{ c.hora|time:"H:i" }}</td>
-            <td>{{ c.motivo|truncatechars:30 }}</td>
-            <td>
-                <a href="{% url 'cita_update' c.pk %}" class="btn btn-sm btn-warning">Editar</a>
-                <a href="{% url 'cita_delete' c.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="5" class="text-center text-muted">No hay citas programadas.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <!-- Tabla de citas -->
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th scope="col" class="fw-semibold">Paciente</th>
+                            <th scope="col" class="fw-semibold">Médico</th>
+                            <th scope="col" class="fw-semibold">Fecha y Hora</th>
+                            <th scope="col" class="fw-semibold">Motivo</th>
+                            <th scope="col" class="fw-semibold text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in citas %}
+                        <tr class="align-middle transition-hover">
+                            <td>{{ c.paciente.nombre }} {{ c.paciente.apellido }}</td>
+                            <td>Dr. {{ c.medico.nombre }} {{ c.medico.apellido }}</td>
+                            <td>{{ c.fecha_hora|date:"d/m/Y H:i" }}</td>
+                            <td>{{ c.motivo|default:"—" }}</td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a href="{% url 'cita_detail' c.pk %}" class="btn btn-info btn-sm px-3">
+                                        <i class="bi bi-eye"></i> Ver
+                                    </a>
+                                    <a href="{% url 'cita_update' c.pk %}" class="btn btn-warning btn-sm px-3">
+                                        <i class="bi bi-pencil"></i> Editar
+                                    </a>
+                                    <a href="{% url 'cita_delete' c.pk %}" class="btn btn-danger btn-sm px-3">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted">
+                                <i class="bi bi-emoji-frown fs-3"></i><br>
+                                No hay citas programadas.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estilos adicionales -->
+<style>
+    /* Animación de hover en filas */
+    .transition-hover {
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .transition-hover:hover {
+        background-color: #f8f9fa !important;
+        transform: translateY(-1px);
+    }
+
+    /* Modo oscuro */
+    body.dark-mode .table thead {
+        background-color: #1e1e1e !important;
+        color: white;
+    }
+
+    body.dark-mode .table tbody tr {
+        color: white;
+    }
+
+    body.dark-mode .table tbody tr:hover {
+        background-color: #2d2d2d !important;
+    }
+
+    body.dark-mode .btn-info {
+        background: linear-gradient(135deg, #0dcaf0, #0dcaf0) !important;
+        border: none;
+        color: white;
+    }
+
+    body.dark-mode .btn-warning {
+        background: linear-gradient(135deg, #ffc107, #e0a800) !important;
+        border: none;
+        color: #212529;
+    }
+
+    body.dark-mode .btn-danger {
+        background: linear-gradient(135deg, #dc3545, #c82333) !important;
+        border: none;
+        color: white;
+    }
+
+    body.dark-mode .text-muted {
+        color: #aaa !important;
+    }
+</style>
 {% endblock %}

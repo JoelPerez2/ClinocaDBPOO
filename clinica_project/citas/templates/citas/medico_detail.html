@@ -1,0 +1,73 @@
+<!-- templates/citas/medico_detail.html -->
+{% extends 'citas/base.html' %}
+
+{% block title %}Detalles del Médico{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary">👨‍⚕️ Detalles del Médico</h2>
+        <a href="{% url 'medico_list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Volver a la lista
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="card-body p-4">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <p class="mb-2"><strong>Nombre:</strong> {{ medico.nombre }} {{ medico.apellido }}</p>
+                    <p class="mb-2"><strong>Especialidad:</strong> {{ medico.especialidad }}</p>
+                    <p class="mb-2"><strong>Licencia:</strong> {% if medico.licencia %}{{ medico.licencia }}{% else %}—{% endif %}</p>
+                    <p class="mb-0"><strong>Fecha de Registro:</strong> {{ medico.fecha_registro|date:"d/m/Y"|default:"—" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex gap-2">
+        <a href="{% url 'medico_update' medico.pk %}" class="btn btn-warning px-4">
+            <i class="bi bi-pencil"></i> Editar
+        </a>
+        <a href="{% url 'medico_delete' medico.pk %}" class="btn btn-danger px-4">
+            <i class="bi bi-trash"></i> Eliminar
+        </a>
+        <a href="{% url 'medico_list' %}" class="btn btn-outline-secondary px-4">
+            <i class="bi bi-list"></i> Volver a la lista
+        </a>
+    </div>
+</div>
+
+<style>
+    body.dark-mode .card {
+        background-color: #1e1e1e !important;
+        color: white;
+    }
+
+    body.dark-mode .card-body p {
+        color: white;
+    }
+
+    body.dark-mode .btn-warning {
+        background: linear-gradient(135deg, #ffc107, #e0a800) !important;
+        border: none;
+        color: #212529;
+    }
+
+    body.dark-mode .btn-danger {
+        background: linear-gradient(135deg, #dc3545, #c82333) !important;
+        border: none;
+        color: white;
+    }
+
+    body.dark-mode .btn-outline-secondary {
+        color: #ccc !important;
+        border-color: #555 !important;
+    }
+
+    body.dark-mode .btn-outline-secondary:hover {
+        background-color: #333 !important;
+        color: white !important;
+    }
+</style>
+{% endblock %}

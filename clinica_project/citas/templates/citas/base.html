@@ -6,6 +6,7 @@
     <title>{% block title %}Clínica Médica{% endblock %}</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
@@ -22,26 +23,119 @@
         }
         /* En base.html, dentro de <style> */
         .card {
-        border: none;
+            border: none;
         }
         .card-header {
-        border-bottom: 2px solid rgba(255,255,255,0.2);
+            border-bottom: 2px solid rgba(255,255,255,0.2);
         }
         .form-control {
-        border-radius: 8px;
-        padding: 10px;
-        font-size: 1rem;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 1rem;
         }
         .btn-primary {
-        background-color: #0066ff;
-        border-color: #0066ff;
-        border-radius: 8px;
-        padding: 10px;
-        font-weight: bold;
+            background-color: #0066ff;
+            border-color: #0066ff;
+            border-radius: 8px;
+            padding: 10px;
+            font-weight: bold;
         }
         .btn-primary:hover {
-        background-color: #0055cc;
-        border-color: #0055cc;
+            background-color: #0055cc;
+            border-color: #0055cc;
+        }
+
+        /* === Estilos para modo oscuro (agregados) === */
+        .theme-toggle-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #f8f9fa;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 1000;
+            color: #212529;
+        }
+
+        .theme-toggle-btn:hover {
+            transform: scale(1.1);
+            background: #e9ecef;
+        }
+
+        .theme-toggle-btn.dark-mode {
+            background: #343a40;
+            color: white;
+        }
+
+        .theme-toggle-btn .sun-icon {
+            display: inline;
+            transition: opacity 0.3s ease;
+        }
+
+        .theme-toggle-btn .moon-icon {
+            display: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .theme-toggle-btn.dark-mode .sun-icon {
+            display: none;
+        }
+
+        .theme-toggle-btn.dark-mode .moon-icon {
+            display: inline;
+        }
+
+        body.transitioning {
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* Modo oscuro */
+        body.dark-mode {
+            background-color: #121212 !important;
+            color: #ffffff !important;
+        }
+
+        body.dark-mode .navbar {
+            background-color: #1e1e1e !important;
+            color: white !important;
+        }
+
+        body.dark-mode .card {
+            background-color: #1e1e1e !important;
+            border-color: #333 !important;
+            color: white !important;
+        }
+
+        body.dark-mode .btn-primary {
+            background-color: #0d6efd !important;
+            border-color: #0d6efd !important;
+        }
+
+        body.dark-mode .btn-success {
+            background-color: #198754 !important;
+            border-color: #198754 !important;
+        }
+
+        body.dark-mode .btn-info {
+            background-color: #0dcaf0 !important;
+            border-color: #0dcaf0 !important;
+        }
+
+        body.dark-mode .text-muted {
+            color: #aaa !important;
+        }
+
+        body.dark-mode footer {
+            background-color: #1e1e1e !important;
+            color: #ccc !important;
         }
     </style>
 </head>
@@ -113,5 +207,44 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- === Script de modo oscuro (agregado) === -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.getElementById('toggle-theme');
+            const body = document.body;
+
+            // Si el botón existe (solo en home.html), configurar interacción
+            if (toggleBtn) {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark') {
+                    body.classList.add('dark-mode');
+                    toggleBtn.classList.add('dark-mode');
+                }
+
+                toggleBtn.addEventListener('click', function() {
+                    body.classList.toggle('dark-mode');
+                    toggleBtn.classList.toggle('dark-mode');
+
+                    if (body.classList.contains('dark-mode')) {
+                        localStorage.setItem('theme', 'dark');
+                    } else {
+                        localStorage.setItem('theme', 'light');
+                    }
+
+                    body.classList.add('transitioning');
+                    setTimeout(() => {
+                        body.classList.remove('transitioning');
+                    }, 500);
+                });
+            }
+
+            // Aplicar tema guardado en otras páginas (aunque no haya botón)
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' && !body.classList.contains('dark-mode')) {
+                body.classList.add('dark-mode');
+            }
+        });
+    </script>
 </body>
 </html>
